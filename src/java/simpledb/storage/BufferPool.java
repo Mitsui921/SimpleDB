@@ -4,6 +4,7 @@ import simpledb.common.Database;
 import simpledb.common.DbException;
 import simpledb.common.DeadlockException;
 import simpledb.common.Permissions;
+import simpledb.transaction.LockManager;
 import simpledb.transaction.TransactionAbortedException;
 import simpledb.transaction.TransactionId;
 
@@ -42,7 +43,7 @@ public class BufferPool {
 
     private LRUCache<PageId, Page> lruCache;
 
-
+    private LockManager lockManager;
 
     /**
      * Creates a BufferPool that caches up to numPages pages.
@@ -51,7 +52,9 @@ public class BufferPool {
      */
     public BufferPool(int numPages) {
         // some code goes here
-
+        this.numPages = numPages;
+        this.lruCache = new LRUCache<>(numPages);
+        this.lockManager = new LockManager();
     }
 
     public static int getPageSize() {
@@ -85,8 +88,28 @@ public class BufferPool {
      */
     public Page getPage(TransactionId tid, PageId pid, Permissions perm)
             throws TransactionAbortedException, DbException {
-        // TODO: some code goes here
-        return null;
+        // some code goes here
+        boolean lockAcquired = false;
+        long start = System.currentTimeMillis();
+        long timeout = new Random().nextInt(2000);
+        while(!lockAcquired){
+            long now = System.currentTimeMillis();
+            if(now - start > timeout){
+                throw new TransactionAbortedException();
+            }
+            lockAcquired = lockManager.acquireLock(tid, pid, perm);
+        }
+        if(lruCache.get(pid) == null){
+            DbFile dbFile = Database.getCatalog().getDatabaseFile(pid.getTableId());
+            Page page = dbFile.readPage(pid);
+            if(lruCache.getSize() >= numPages){
+                evictPage();
+            }
+            lruCache.put(pid, page);
+            return page;
+        } else {
+            return lruCache.get(pid);
+        }
     }
 
     /**
