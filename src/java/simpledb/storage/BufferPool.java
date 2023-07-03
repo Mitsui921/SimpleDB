@@ -38,13 +38,20 @@ public class BufferPool {
      */
     public static final int DEFAULT_PAGES = 50;
 
+    private int numPages;
+
+    private LRUCache<PageId, Page> lruCache;
+    
+
+
     /**
      * Creates a BufferPool that caches up to numPages pages.
      *
      * @param numPages maximum number of pages in this buffer pool.
      */
     public BufferPool(int numPages) {
-        // TODO: some code goes here
+        // some code goes here
+
     }
 
     public static int getPageSize() {
