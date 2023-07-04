@@ -12,10 +12,6 @@ public class TupleDesc implements Serializable {
 
     private List<TDItem> tupleDescList = new ArrayList<>();
 
-    public TupleDesc(List<TDItem> tupleDescList){
-        this.tupleDescList = tupleDescList;
-    }
-
     /**
      * A help class to facilitate organizing the information of each field
      */
@@ -62,6 +58,10 @@ public class TupleDesc implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public TupleDesc(List<TDItem> tupleDescList){
+        this.tupleDescList = tupleDescList;
+    }
+
     /**
      * Create a new TupleDesc with typeAr.length fields with fields of the
      * specified types, with associated named fields.
@@ -92,6 +92,10 @@ public class TupleDesc implements Serializable {
         for (int i=0; i<typeAr.length; i++){
             tupleDescList.add(new TDItem(typeAr[i], null));
         }
+    }
+
+    public List<TDItem> getTupleDescList(){
+        return tupleDescList;
     }
 
     /**
