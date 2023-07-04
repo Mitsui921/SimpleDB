@@ -7,7 +7,9 @@ import simpledb.common.Debug;
 import simpledb.transaction.TransactionId;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -27,6 +29,9 @@ public class HeapPage implements Page {
 
     byte[] oldData;
     private final Byte oldDataLock = (byte) 0;
+
+    private Boolean dirty;
+    private TransactionId tid;
 
     /**
      * Create a HeapPage from a set of bytes of data read from disk.
@@ -75,9 +80,8 @@ public class HeapPage implements Page {
      * @return the number of tuples on this page
      */
     private int getNumTuples() {
-        // TODO: some code goes here
-        return 0;
-
+        // some code goes here
+        return (int) Math.floor((BufferPool.getPageSize() * 8.0) / (td.getSize() * 8.0 + 1.0));
     }
 
     /**
@@ -86,10 +90,8 @@ public class HeapPage implements Page {
      * @return the number of bytes in the header of a page in a HeapFile with each tuple occupying tupleSize bytes
      */
     private int getHeaderSize() {
-
-        // TODO: some code goes here
-        return 0;
-
+        // some code goes here
+        return (int) Math.ceil((getNumTuples()) / 8.0);
     }
 
     /**
@@ -121,8 +123,8 @@ public class HeapPage implements Page {
      * @return the PageId associated with this page.
      */
     public HeapPageId getId() {
-        // TODO: some code goes here
-        throw new UnsupportedOperationException("implement this");
+        // some code goes here
+        return pid;
     }
 
     /**
@@ -293,16 +295,25 @@ public class HeapPage implements Page {
      * Returns the number of unused (i.e., empty) slots on this page.
      */
     public int getNumUnusedSlots() {
-        // TODO: some code goes here
-        return 0;
+        // some code goes here
+        int res = 0;
+        for (int i=0; i<numSlots; i++){
+            if((header[i/8] >> (i%8) & 1) == 0) res++;
+        }
+        return res;
     }
 
     /**
      * Returns true if associated slot on this page is filled.
      */
     public boolean isSlotUsed(int i) {
-        // TODO: some code goes here
-        return false;
+        // some code goes here
+        int index = i/8;
+        int offset = i%8;
+        int tmp = 1 << (offset);
+        byte b = header[index];
+        int res = ((b & tmp) >>> (offset));
+        return res == 1;
     }
 
     /**
@@ -318,8 +329,15 @@ public class HeapPage implements Page {
      *         (note that this iterator shouldn't return tuples in empty slots!)
      */
     public Iterator<Tuple> iterator() {
-        // TODO: some code goes here
-        return null;
+        // some code goes here
+        List<Tuple> tupleList = new ArrayList<>();
+        int num = getNumTuples();
+        for (int i=0; i<num; i++){
+            if(isSlotUsed(i)){
+                tupleList.add(this.tuples[i]);
+            }
+        }
+        return tupleList.iterator();
     }
 
 }
