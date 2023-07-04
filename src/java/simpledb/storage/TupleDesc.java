@@ -77,6 +77,8 @@ public class TupleDesc implements Serializable {
             for (int i=0; i<typeAr.length; i++){
                 tupleDescList.add(new TDItem(typeAr[i], fieldAr[i]));
             }
+        } else {
+            throw new IllegalArgumentException("typeAr length is not equal to fieldAr length");
         }
     }
 
