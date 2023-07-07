@@ -5,19 +5,21 @@
 
 ### Lab 1
 
-<img src="/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.43.49.png" alt="截屏2023-07-07 上午8.43.49" style="zoom:;" />
+![](https://i.ibb.co/hHpBpf0/2023-07-07-8-43-49.png)
 
-![截屏2023-07-07 上午8.44.16](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.44.16.png)
+![](https://i.ibb.co/qCB3GCC/2023-07-07-8-44-16.png)
 
-![截屏2023-07-07 上午8.44.29](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.44.29.png)
+![](https://i.ibb.co/NjHpgqj/2023-07-07-8-44-29.png)
 
-![截屏2023-07-07 上午8.44.41](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.44.41.png)
+![](https://i.ibb.co/YfyY9Fh/2023-07-07-8-45-35.png)
 
-![截屏2023-07-07 上午8.45.35](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.45.35.png)
+![](https://i.ibb.co/B3hGsRx/2023-07-07-8-44-41.png)
 
-![截屏2023-07-07 上午8.45.55](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.45.55.png)
+![](https://i.ibb.co/fFr7Wnc/2023-07-07-8-45-55.png)
 
-![截屏2023-07-07 上午8.46.13](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.46.13.png)
+![](https://i.ibb.co/Y32P6nj/2023-07-07-8-46-13.png)
+
+## Intro
 
 Git repository for labs in [6.5830/6.5831](http://dsg.csail.mit.edu/6.5830/).
 
