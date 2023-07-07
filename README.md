@@ -5,19 +5,41 @@
 
 ### Lab 1
 
-![](https://i.ibb.co/hHpBpf0/2023-07-07-8-43-49.png)
+![TupleDescTest](https://i.ibb.co/hHpBpf0/2023-07-07-8-43-49.png)
 
-![](https://i.ibb.co/qCB3GCC/2023-07-07-8-44-16.png)
+![CatalogTest](https://i.ibb.co/qCB3GCC/2023-07-07-8-44-16.png)
 
-![](https://i.ibb.co/NjHpgqj/2023-07-07-8-44-29.png)
+![HeapPageIdTest](https://i.ibb.co/NjHpgqj/2023-07-07-8-44-29.png)
 
-![](https://i.ibb.co/YfyY9Fh/2023-07-07-8-45-35.png)
+![HeapPageReadTest](https://i.ibb.co/YfyY9Fh/2023-07-07-8-45-35.png)
 
-![](https://i.ibb.co/B3hGsRx/2023-07-07-8-44-41.png)
+![RecordIdTest](https://i.ibb.co/B3hGsRx/2023-07-07-8-44-41.png)
 
-![](https://i.ibb.co/fFr7Wnc/2023-07-07-8-45-55.png)
+![HeapFileReadTest](https://i.ibb.co/fFr7Wnc/2023-07-07-8-45-55.png)
 
-![](https://i.ibb.co/Y32P6nj/2023-07-07-8-46-13.png)
+![ScanTest](https://i.ibb.co/Y32P6nj/2023-07-07-8-46-13.png)
+
+### Lab 2
+
+![PredicateTest](https://i.ibb.co/PZyrfhV/2023-07-07-11-26-26.png)
+
+![JoinPredicateTest](https://i.ibb.co/w7wxRGs/2023-07-07-11-26-46.png)
+
+![FilterTest](https://i.ibb.co/7Y8PNjD/2023-07-07-11-27-01.png)
+
+![JoinTest](https://i.ibb.co/ZGmxFMT/2023-07-07-11-27-35.png)
+
+![systemtest.FilterTest](https://i.ibb.co/sv9pVyb/2023-07-07-11-27-51.png)
+
+![systemtest.JoinTest](https://i.ibb.co/Qvd5Q5b/2023-07-07-11-28-15.png)
+
+![IntegerAggregatorTest](https://i.ibb.co/wJhK2HC/2023-07-07-3-02-51.png)
+
+![StringAggregatorTest](https://i.ibb.co/MG74hx4/2023-07-07-3-03-06.png)
+
+![AggregateTest](https://i.ibb.co/3mLP34s/2023-07-07-3-03-20.png)
+
+![systemtest.AggregateTest](https://i.ibb.co/qjPBfwL/2023-07-07-3-03-35.png)
 
 ## Intro
 
