@@ -2,7 +2,6 @@ package simpledb.storage;
 
 import simpledb.common.Database;
 import simpledb.common.DbException;
-import simpledb.common.DeadlockException;
 import simpledb.common.Permissions;
 import simpledb.transaction.LockManager;
 import simpledb.transaction.TransactionAbortedException;
@@ -10,8 +9,6 @@ import simpledb.transaction.TransactionId;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * BufferPool manages the reading and writing of pages into memory from
@@ -174,8 +171,14 @@ public class BufferPool {
      */
     public void insertTuple(TransactionId tid, int tableId, Tuple t)
             throws DbException, IOException, TransactionAbortedException {
-        // TODO: some code goes here
+        // some code goes here
         // not necessary for lab1
+        DbFile dbFile = Database.getCatalog().getDatabaseFile(tableId);
+        List<Page> pages = dbFile.insertTuple(tid, t);
+        for (Page page : pages){
+            page.markDirty(true, tid);
+            lruCache.put(page.getId(), page);
+        }
     }
 
     /**
@@ -193,8 +196,15 @@ public class BufferPool {
      */
     public void deleteTuple(TransactionId tid, Tuple t)
             throws DbException, IOException, TransactionAbortedException {
-        // TODO: some code goes here
+        // some code goes here
         // not necessary for lab1
+        PageId pageId = t.getRecordId().getPageId();
+        int tableId = pageId.getTableId();
+        DbFile dbFile = Database.getCatalog().getDatabaseFile(tableId);
+        List<Page> pages = dbFile.deleteTuple(tid, t);
+        for (int i=0; i<pages.size(); i++){
+            pages.get(i).markDirty(true, tid);
+        }
     }
 
     /**
@@ -249,4 +259,7 @@ public class BufferPool {
         // not necessary for lab1
     }
 
+    public LockManager getLockManager() {
+        return lockManager;
+    }
 }
