@@ -1,6 +1,24 @@
 6.5830/6.5831 Labs
 ==================
 
+## Test Results
+
+### Lab 1
+
+<img src="/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.43.49.png" alt="截屏2023-07-07 上午8.43.49" style="zoom:;" />
+
+![截屏2023-07-07 上午8.44.16](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.44.16.png)
+
+![截屏2023-07-07 上午8.44.29](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.44.29.png)
+
+![截屏2023-07-07 上午8.44.41](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.44.41.png)
+
+![截屏2023-07-07 上午8.45.35](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.45.35.png)
+
+![截屏2023-07-07 上午8.45.55](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.45.55.png)
+
+![截屏2023-07-07 上午8.46.13](/Users/jtao/Library/Application Support/typora-user-images/截屏2023-07-07 上午8.46.13.png)
+
 Git repository for labs in [6.5830/6.5831](http://dsg.csail.mit.edu/6.5830/).
 
 We will be using git, a source code control tool, to distribute labs in
