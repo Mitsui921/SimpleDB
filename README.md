@@ -5,9 +5,15 @@
 
 ### Lab 1
 
+#### Exercise 1
+
 ![TupleDescTest](https://i.ibb.co/hHpBpf0/2023-07-07-8-43-49.png)
 
+#### Exercise 2
+
 ![CatalogTest](https://i.ibb.co/qCB3GCC/2023-07-07-8-44-16.png)
+
+#### Exercise 4
 
 ![HeapPageIdTest](https://i.ibb.co/NjHpgqj/2023-07-07-8-44-29.png)
 
@@ -15,11 +21,17 @@
 
 ![RecordIdTest](https://i.ibb.co/B3hGsRx/2023-07-07-8-44-41.png)
 
+#### Exercise 5
+
 ![HeapFileReadTest](https://i.ibb.co/fFr7Wnc/2023-07-07-8-45-55.png)
+
+#### Exercise 6
 
 ![ScanTest](https://i.ibb.co/Y32P6nj/2023-07-07-8-46-13.png)
 
 ### Lab 2
+
+#### Exercise 1
 
 ![PredicateTest](https://i.ibb.co/PZyrfhV/2023-07-07-11-26-26.png)
 
@@ -33,6 +45,8 @@
 
 ![systemtest.JoinTest](https://i.ibb.co/Qvd5Q5b/2023-07-07-11-28-15.png)
 
+#### Exercise 2
+
 ![IntegerAggregatorTest](https://i.ibb.co/wJhK2HC/2023-07-07-3-02-51.png)
 
 ![StringAggregatorTest](https://i.ibb.co/MG74hx4/2023-07-07-3-03-06.png)
@@ -41,11 +55,25 @@
 
 ![systemtest.AggregateTest](https://i.ibb.co/qjPBfwL/2023-07-07-3-03-35.png)
 
+#### Exercise 3
+
 ![HeapPageWriteTest](https://i.ibb.co/D8LwLdh/2023-07-08-9-58-46.png)
 
 ![HeapFileWriteTest](https://i.ibb.co/V2FmxVz/2023-07-08-9-59-07.png)
 
 ![BufferPoolWriteTest](https://i.ibb.co/165BgSb/2023-07-08-9-59-21.png)
+
+#### Exercise 4
+
+![InsertTest](https://i.ibb.co/dM3GKYm/2023-07-08-11-13-22.png)
+
+![systemtest.InsertTest](https://i.ibb.co/3hQyJP4/2023-07-08-11-13-36.png)
+
+- [ ] **Exercise 4 DeleteTest**
+
+#### Exercise 5
+
+
 
 ## Intro
 
