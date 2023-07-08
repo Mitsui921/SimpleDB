@@ -41,6 +41,12 @@
 
 ![systemtest.AggregateTest](https://i.ibb.co/qjPBfwL/2023-07-07-3-03-35.png)
 
+![HeapPageWriteTest](https://i.ibb.co/D8LwLdh/2023-07-08-9-58-46.png)
+
+![HeapFileWriteTest](https://i.ibb.co/V2FmxVz/2023-07-08-9-59-07.png)
+
+![BufferPoolWriteTest](https://i.ibb.co/165BgSb/2023-07-08-9-59-21.png)
+
 ## Intro
 
 Git repository for labs in [6.5830/6.5831](http://dsg.csail.mit.edu/6.5830/).
