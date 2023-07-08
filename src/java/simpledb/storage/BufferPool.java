@@ -213,9 +213,24 @@ public class BufferPool {
      * break simpledb if running in NO STEAL mode.
      */
     public synchronized void flushAllPages() throws IOException {
-        // TODO: some code goes here
+        // some code goes here
         // not necessary for lab1
-
+        LRUCache<PageId, Page>.DLinkedNode head = lruCache.getHead();
+        LRUCache<PageId, Page>.DLinkedNode tail = lruCache.getTail();
+        while (head != tail){
+            Page value = head.value;
+            if (value != null && value.isDirty() != null){
+                DbFile dbFile = Database.getCatalog().getDatabaseFile(value.getId().getTableId());
+                try {
+                    Database.getLogFile().logWrite(value.isDirty(), value.getBeforeImage(), value);
+                    Database.getLogFile().force();
+                    dbFile.writePage(value);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            head = head.next;
+        }
     }
 
     /**
@@ -228,8 +243,18 @@ public class BufferPool {
      * are removed from the cache so they can be reused safely
      */
     public synchronized void removePage(PageId pid) {
-        // TODO: some code goes here
+        // some code goes here
         // not necessary for lab1
+        LRUCache<PageId, Page>.DLinkedNode head = lruCache.getHead();
+        LRUCache<PageId, Page>.DLinkedNode tail = lruCache.getTail();
+        while (head != tail){
+            PageId key = head.key;
+            if (key != null && key.equals(pid)){
+                lruCache.remove(head);
+                return;
+            }
+            head = head.next;
+        }
     }
 
     /**
@@ -238,8 +263,21 @@ public class BufferPool {
      * @param pid an ID indicating the page to flush
      */
     private synchronized void flushPage(PageId pid) throws IOException {
-        // TODO: some code goes here
+        // some code goes here
         // not necessary for lab1
+        Page discardPage = lruCache.get(pid);
+        DbFile dbFile = Database.getCatalog().getDatabaseFile(discardPage.getId().getTableId());
+        try {
+            TransactionId transactionId = discardPage.isDirty();
+            if (transactionId != null){
+                Database.getLogFile().logWrite(transactionId, discardPage.getBeforeImage(), discardPage);
+                Database.getLogFile().force();
+                discardPage.markDirty(false, null);
+                dbFile.writePage(discardPage);
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -255,8 +293,29 @@ public class BufferPool {
      * Flushes the page to disk to ensure dirty pages are updated on disk.
      */
     private synchronized void evictPage() throws DbException {
-        // TODO: some code goes here
+        // some code goes here
         // not necessary for lab1
+        Page value = lruCache.getTail().prev.value;
+        if (value != null && value.isDirty() != null){
+            findNotDirty();
+        } else {
+            lruCache.discard();
+        }
+    }
+
+    private void findNotDirty() throws DbException{
+        LRUCache<PageId, Page>.DLinkedNode head = lruCache.getHead();
+        LRUCache<PageId, Page>.DLinkedNode tail = lruCache.getTail();
+        tail = tail.prev;
+        while (head != tail){
+            Page value = tail.value;
+            if (value != null && value.isDirty() == null){
+                lruCache.remove(tail);
+                return;
+            }
+            tail = tail.prev;
+        }
+        throw new DbException("All dirty pages");
     }
 
     public LockManager getLockManager() {
