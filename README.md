@@ -9,6 +9,8 @@
 
 ![TupleDescTest](https://i.ibb.co/hHpBpf0/2023-07-07-8-43-49.png)
 
+![TupleTest](https://i.ibb.co/k4JHx59/2023-07-09-3-18-46.png)
+
 #### Exercise 2
 
 ![CatalogTest](https://i.ibb.co/qCB3GCC/2023-07-07-8-44-16.png)
