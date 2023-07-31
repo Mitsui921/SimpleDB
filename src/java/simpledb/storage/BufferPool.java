@@ -7,6 +7,7 @@ import simpledb.transaction.LockManager;
 import simpledb.transaction.TransactionAbortedException;
 import simpledb.transaction.TransactionId;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.*;
 
@@ -130,8 +131,9 @@ public class BufferPool {
      * @param tid the ID of the transaction requesting the unlock
      */
     public void transactionComplete(TransactionId tid) {
-        // TODO: some code goes here
+        // some code goes here
         // not necessary for lab1|lab2
+        transactionComplete(tid, true);
     }
 
     /**
@@ -151,8 +153,18 @@ public class BufferPool {
      * @param commit a flag indicating whether we should commit or abort
      */
     public void transactionComplete(TransactionId tid, boolean commit) {
-        // TODO: some code goes here
+        // some code goes here
         // not necessary for lab1|lab2
+        if (commit){
+            try {
+                newFlushPages(tid);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        } else {
+            rollback(tid);
+        }
+        lockManager.releaseAllLock(tid);
     }
 
     /**
@@ -285,8 +297,46 @@ public class BufferPool {
      * Write all pages of the specified transaction to disk.
      */
     public synchronized void flushPages(TransactionId tid) throws IOException {
-        // TODO: some code goes here
+        // some code goes here
         // not necessary for lab1|lab2
+        LRUCache<PageId, Page>.DLinkedNode head = lruCache.getHead();
+        LRUCache<PageId, Page>.DLinkedNode tail = lruCache.getTail();
+        while (head != tail){
+            Page value = head.value;
+            if (value != null && value.isDirty() != null && value.isDirty().equals(tid)){
+                DbFile dbFile = Database.getCatalog().getDatabaseFile(value.getId().getTableId());
+                try {
+                    Database.getLogFile().logWrite(value.isDirty(), value.getBeforeImage(), value);
+                    Database.getLogFile().force();
+                    value.markDirty(false, null);
+                    dbFile.writePage(value);
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            head = head.next;
+        }
+    }
+
+    public synchronized void newFlushPages(TransactionId tid) throws IOException {
+        LRUCache<PageId, Page>.DLinkedNode head = lruCache.getHead();
+        LRUCache<PageId, Page>.DLinkedNode tail = lruCache.getTail();
+        while (head != tail){
+            Page value = head.value;
+            if (value != null && value.isDirty() != null && value.isDirty().equals(tid)){
+                DbFile dbFile = Database.getCatalog().getDatabaseFile(value.getId().getTableId());
+                try {
+                    Database.getLogFile().logWrite(value.isDirty(), value.getBeforeImage(), value);
+                    Database.getLogFile().force();
+                    value.markDirty(false, null);
+                    dbFile.writePage(value);
+                    value.setBeforeImage();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+            head = head.next;
+        }
     }
 
     /**
@@ -316,7 +366,28 @@ public class BufferPool {
             }
             tail = tail.prev;
         }
-        throw new DbException("All dirty pages");
+        throw new DbException("No dirty pages");
+    }
+
+    private synchronized void rollback(TransactionId tid){
+        LRUCache<PageId, Page>.DLinkedNode head = lruCache.getHead();
+        LRUCache<PageId, Page>.DLinkedNode tail = lruCache.getTail();
+        while (head != tail){
+            Page value = head.value;
+            LRUCache<PageId, Page>.DLinkedNode tmp = head.next;
+            if (value != null && value.isDirty() != null && value.isDirty().equals(tid)){
+                lruCache.remove(head);
+                try {
+                    Page page = Database.getBufferPool().getPage(tid, value.getId(), Permissions.READ_ONLY);
+                    page.markDirty(false, null);
+                } catch (TransactionAbortedException e){
+                    e.printStackTrace();
+                } catch (DbException e){
+                    e.printStackTrace();
+                }
+            }
+            head = tmp;
+        }
     }
 
     public LockManager getLockManager() {
