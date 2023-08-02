@@ -533,8 +533,74 @@ public class LogFile {
     public void recover() throws IOException {
         synchronized (Database.getBufferPool()) {
             synchronized (this) {
-                recoveryUndecided = false;
-                // TODO: some code goes here
+                // some code goes here
+                Map<Long, List<Page[]>> map = new HashMap<>();
+                raf.seek(0);
+                print();
+                long checkPoint = raf.readLong();
+                if (checkPoint != -1){
+                    Map<Long, Long> pos = new HashMap<>();
+                    raf.seek(checkPoint);
+                    raf.seek(raf.getFilePointer() + 12);
+                    int num = raf.readInt();
+                    while (num > 0){
+                        long curId = raf.readLong();
+                        long off = raf.readLong();
+                        pos.put(curId, off);
+                        num--;
+                    }
+                    for (Long i : pos.keySet()){
+                        raf.seek(pos.get(i));
+                        recoverSearch(raf, map);
+                    }
+                } else {
+                    System.out.println(raf.getFilePointer() + "-------------");
+                    recoverSearch(raf, map);
+                }
+                for (Long tid : map.keySet()){
+                    Page[] pages = map.get(tid).get(0);
+                    Page before = pages[0];
+                    DbFile dbFile = Database.getCatalog().getDatabaseFile(before.getId().getTableId());
+                    dbFile.writePage(before);
+                }
+                map.clear();
+            }
+        }
+    }
+
+    public void recoverSearch(RandomAccessFile raf, Map<Long, List<Page[]>> map) throws IOException{
+        while (true){
+            try {
+                int type = raf.readInt();
+                long curId = raf.readLong();
+                if (type == 3){
+                    if (!map.containsKey(curId)){
+                        map.put(curId, new ArrayList<>());
+                    }
+                    Page before = readPageData(raf);
+                    Page after = readPageData(raf);
+                    Page[] pages = new Page[2];
+                    pages[0] = before;
+                    pages[1] = after;
+                    map.get(curId).add(pages);
+                } else if (type == 2 && map.containsKey(curId)){
+                    Page[] pages = map.get(curId).get(map.get(curId).size() - 1);
+                    Page before = pages[0];
+                    Page after = pages[1];
+                    DbFile dbFile = Database.getCatalog().getDatabaseFile(before.getId().getTableId());
+                    dbFile.writePage(after);
+                    map.remove(curId);
+                } else if (type == 1 && map.containsKey(curId)){
+                    Page[] pages = map.get(curId).get(0);
+                    Page before = pages[0];
+                    Page after = pages[1];
+                    DbFile dbFile = Database.getCatalog().getDatabaseFile(before.getId().getTableId());
+                    dbFile.writePage(before);
+                    map.remove(curId);
+                }
+                raf.seek(raf.getFilePointer() + 8);
+            } catch (EOFException e){
+                break;
             }
         }
     }
