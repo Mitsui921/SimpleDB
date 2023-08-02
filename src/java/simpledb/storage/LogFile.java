@@ -473,7 +473,39 @@ public class LogFile {
         synchronized (Database.getBufferPool()) {
             synchronized (this) {
                 preAppend();
-                // TODO: some code goes here
+                // some code goes here
+                long tidId = tid.getId();
+                rollback(tidId);
+            }
+        }
+    }
+
+    public void rollback(Long tidId) throws IOException{
+        Long begin = tidToFirstLogRecord.get(tidId);
+        raf.seek(begin);
+        while (true){
+            try {
+                int type = raf.readInt();
+                long curId = raf.readLong();
+                if (curId != tidId){
+                    if (type == 3){
+                        readPageData(raf);
+                        readPageData(raf);
+                    }
+                } else {
+                    if (type == 3){
+                        Page before = readPageData(raf);
+                        Page after = readPageData(raf);
+                        DbFile dbFile = Database.getCatalog().getDatabaseFile(before.getId().getTableId());
+                        dbFile.writePage(before);
+                        Database.getBufferPool().removePage(after.getId());
+                        raf.seek(raf.getFilePointer() + 8);
+                        break;
+                    }
+                }
+                raf.seek(raf.getFilePointer() + 8);
+            } catch (EOFException e){
+                break;
             }
         }
     }
