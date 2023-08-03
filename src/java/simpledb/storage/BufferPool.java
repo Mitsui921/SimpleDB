@@ -366,7 +366,7 @@ public class BufferPool {
             }
             tail = tail.prev;
         }
-        throw new DbException("No dirty pages");
+        throw new DbException("All dirty pages");
     }
 
     private synchronized void rollback(TransactionId tid){
